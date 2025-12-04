@@ -13,7 +13,7 @@ This project is built to solve the real-world problem of inventory chaos in coll
 
 ## 👥 Team Members
 
-| Name            | Roll Number |
+| Name            | Registration Number |
 |-----------------|-------------|
 | **Anmol Kumar** | 20240007    |
 | **Ashwini Kumar** | 20240014 |
