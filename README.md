@@ -27,7 +27,7 @@ This project is built to solve the real-world problem of inventory chaos in coll
 - Register / Login
 - View available items
 - Request materials
-- Track request status (Pending → Approved → Issued → Declined)
+- Track request status (Pending → Approved or Pending → Declined)
 
 ### 🧑‍🔧 **Storekeeper Module**
 - Add new items to inventory
