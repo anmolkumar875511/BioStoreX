@@ -3,7 +3,7 @@ import jsonwebtoken from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
-    username: { 
+    userName: { 
         type: String, 
         required: true, 
         unique: true, 
@@ -45,21 +45,20 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
-// 🔐 Hash password before saving
-userSchema.pre("save", async function (next) {
-    if (!this.isModified("password")) return next();
+userSchema.pre("save", async function () {
+    if (!this.isModified("password")) return;
     this.password = await bcrypt.hash(this.password, 11);
-    next();
 });
 
 
-// 🔐 Compare passwords
+
+
 userSchema.methods.isPasswordCorrect = async function (password) {
     return bcrypt.compare(password, this.password);
 };
 
 
-// 🔐 Access token
+
 userSchema.methods.generateAccessToken = function () {
     return jsonwebtoken.sign(
         { _id: this._id, username: this.username, role: this.role },
@@ -69,7 +68,7 @@ userSchema.methods.generateAccessToken = function () {
 };
 
 
-// 🔐 Refresh token
+
 userSchema.methods.generateRefreshToken = async function () {
     const refreshToken = jsonwebtoken.sign(
         { _id: this._id },
