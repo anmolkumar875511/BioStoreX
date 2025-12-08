@@ -132,7 +132,6 @@ const issueItem = async (req, res, next) => {
         await IssueLog.create({
             item: item._id,
             issuedTo: request.user._id,
-            type: "APPROVED",
             quantity: qty,
             issuedBy: req.user._id
         });
