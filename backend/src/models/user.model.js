@@ -3,20 +3,41 @@ import jsonwebtoken from "jsonwebtoken";
 import bcrypt from "bcrypt";
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true, lowercase: true, trim: true },
+    username: { 
+        type: String, 
+        required: true, 
+        unique: true, 
+        lowercase: true, 
+        trim: true 
+    },
+
     fullName: { type: String, required: true, trim: true },
-    email: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true },
-    name: { type: String, required: true },
+
+    email: { 
+        type: String, 
+        required: true, 
+        unique: true, 
+        lowercase: true,
+        match: [/^\S+@\S+\.\S+$/, "Invalid email format"]
+    },
+
+    password: { 
+        type: String, 
+        required: true, 
+        minlength: [6, "Password must be at least 6 characters"] 
+    },
+
     role: { 
         type: String,
         enum: ["Student", "Storekeeper", "Admin"],
         default: "Student"
     },
+
     isActive: { type: Boolean, default: true },
+
     student: {
-        registrationNo: String,
-        year: Number,
+        registrationNo: { type: String },
+        year: { type: Number, min: 1, max: 6 }
     },
 
     refreshToken: { type: String }
@@ -24,25 +45,32 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 
+// 🔐 Hash password before saving
 userSchema.pre("save", async function (next) {
-    if( !this.isModified("password")) return next();
+    if (!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 11);
     next();
-})
+});
 
+
+// 🔐 Compare passwords
 userSchema.methods.isPasswordCorrect = async function (password) {
-    return await bcrypt.compare(password, this.password);
-}
+    return bcrypt.compare(password, this.password);
+};
 
-userSchema.methods.generateAccessToken = function() {
+
+// 🔐 Access token
+userSchema.methods.generateAccessToken = function () {
     return jsonwebtoken.sign(
         { _id: this._id, username: this.username, role: this.role },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
-    )
-}
+    );
+};
 
-userSchema.methods.generateRefreshToken = function () {
+
+// 🔐 Refresh token
+userSchema.methods.generateRefreshToken = async function () {
     const refreshToken = jsonwebtoken.sign(
         { _id: this._id },
         process.env.REFRESH_TOKEN_SECRET,
@@ -50,6 +78,7 @@ userSchema.methods.generateRefreshToken = function () {
     );
 
     this.refreshToken = refreshToken;
+    await this.save({ validateBeforeSave: false }); 
     return refreshToken;
 };
 
