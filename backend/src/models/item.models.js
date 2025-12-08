@@ -18,6 +18,7 @@ const itemSchema = new mongoose.Schema({
         required: true,
         enum: ["g", "mg", "kg", "mL", "L", "pieces", "box", "pack"]
     },
+    image: { type: String },
     batches: [batchSchema],
     totalQuantity: { type: Number, default: 0 },   // auto-calculated
     minThreshold: { type: Number, default: 5 }, // low stock alert
