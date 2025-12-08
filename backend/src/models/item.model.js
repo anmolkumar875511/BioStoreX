@@ -20,9 +20,9 @@ const itemSchema = new mongoose.Schema({
     },
     image: { type: String },
     batches: [batchSchema],
-    totalQuantity: { type: Number, default: 0 },   // auto-calculated
-    minThreshold: { type: Number, default: 5 }, // low stock alert
-    sku: { type: String, unique: true }, // optional but useful
+    totalQuantity: { type: Number, default: 0 },
+    minThreshold: { type: Number, default: 5 },
+    sku: { type: String, unique: true },
 }, { timestamps: true });
 
 
