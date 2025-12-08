@@ -1,4 +1,5 @@
 import asyncHandler from "../utils/asyncHandler.js";
+import jsonwebtoken from "jsonwebtoken";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { User } from "../models/user.model.js";
@@ -95,6 +96,7 @@ const loginUser = asyncHandler(async (req, res) => {
     return res
         .status(200)
         .cookie("refreshToken", refreshToken, options)
+        .cookie("accessToken", accessToken, options)
         .json(
             new ApiResponse(
                 200,
@@ -123,10 +125,53 @@ const logoutUser = asyncHandler(async (req, res) => {
     return res
         .status(200)
         .clearCookie("refreshToken", options)
-        .json(new ApiResponse(200, {}, "User logged out successfully"));
+        .clearCookie("accessToken", options)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                "User logged out successfully"
+            )
+        );
 });
 
 
+const refreshAccessToken = asyncHandler(async (req, res) => {
+    const inRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
 
+    if (!inRefreshToken) {
+        throw new ApiError(401, "Unauthorized: No refresh token provided");
+    }
 
-export { registerUser, loginUser, logoutUser };
+    const decodedToken = jsonwebtoken.verify(inRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+    const user = await User.findById(decodedToken._id);
+
+    if (!user) {
+        throw new ApiError(401, "Unauthorized: User not found");
+    }
+
+    if (user.refreshToken !== inRefreshToken) {
+        throw new ApiError(401, "Unauthorized: Invalid refresh token");
+    }
+
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
+
+    const options = {
+        httpOnly: true,
+        secure: true
+    };
+
+    return res.status(200)
+    .cookie("refreshToken", refreshToken, options)
+    .cookie("accessToken", accessToken, options)
+    .json(
+        new ApiResponse(
+            200,
+            { accessToken, refreshToken },
+            "Access token refreshed successfully"
+        )
+    );
+});
+
+export { registerUser, loginUser, logoutUser, refreshAccessToken };
