@@ -61,7 +61,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 
 userSchema.methods.generateAccessToken = function () {
     return jsonwebtoken.sign(
-        { _id: this._id, username: this.username, role: this.role },
+        { _id: this._id, userName: this.userName, role: this.role },
         process.env.ACCESS_TOKEN_SECRET,
         { expiresIn: process.env.ACCESS_TOKEN_EXPIRY }
     );

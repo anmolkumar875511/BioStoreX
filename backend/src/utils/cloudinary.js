@@ -15,8 +15,10 @@ const uploadImage = async (filePath) => {
             resource_type: "image"
         });
 
-        console.log("Image uploaded successfully !!", result.secure_url);
-        return result;
+        return {
+            secure_url: result.secure_url,
+            public_id: result.public_id
+        };
     } catch (error) {
         console.log("Image upload failed !!", error.message);
 

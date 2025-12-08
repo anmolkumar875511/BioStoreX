@@ -18,7 +18,10 @@ const itemSchema = new mongoose.Schema({
         required: true,
         enum: ["g", "mg", "kg", "mL", "L", "pieces", "box", "pack"]
     },
-    image: { type: String },
+    image: {
+        url: String,
+        publicId: String
+    },
     batches: [batchSchema],
     totalQuantity: { type: Number, default: 0 },
     minThreshold: { type: Number, default: 5 },
@@ -27,4 +30,3 @@ const itemSchema = new mongoose.Schema({
 
 
 export const Item = mongoose.model("Item", itemSchema);
-
