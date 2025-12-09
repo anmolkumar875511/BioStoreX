@@ -28,6 +28,10 @@ const verifyJWT = asyncHandler(async (req, res, next) => {
             throw new ApiError(401, "Unauthorized: User not found");
         }
 
+        if (!user.isActive) {
+            throw new ApiError(401, "Unauthorized: User is inactive");
+        }
+
         req.user = user;
 
         next();
