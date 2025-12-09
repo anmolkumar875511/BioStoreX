@@ -16,14 +16,14 @@ const router = Router();
 router.post(
     "/request",
     verifyJWT,
-    authorizeRoles("STUDENT"),
+    authorizeRoles("Student"),
     requestItem
 );
 
 router.get(
     "/my-requests",
     verifyJWT,
-    authorizeRoles("STUDENT"),
+    authorizeRoles("Student"),
     getMyRequests
 );
 
@@ -33,28 +33,28 @@ router.get(
 router.get(
     "/",
     verifyJWT,
-    authorizeRoles("STOREKEEPER"),
+    authorizeRoles("Storekeeper"),
     getAllRequests
 );
 
 router.put(
     "/approve/:id",
     verifyJWT,
-    authorizeRoles("STOREKEEPER"),
+    authorizeRoles("Storekeeper"),
     approveRequest
 );
 
 router.put(
     "/decline/:id",
     verifyJWT,
-    authorizeRoles("STOREKEEPER"),
+    authorizeRoles("Storekeeper"),
     declineRequest
 );
 
 router.put(
     "/issue/:id",
     verifyJWT,
-    authorizeRoles("STOREKEEPER"),
+    authorizeRoles("Storekeeper"),
     issueItem
 );
 

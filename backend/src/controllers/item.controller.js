@@ -3,6 +3,7 @@ import { StockLog } from "../models/stock-log.model.js";
 import { uploadImage } from "../utils/cloudinary.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import cloudinary from "cloudinary";
 import fs from "fs";
 
 const addStock = async (req, res, next) => {
@@ -16,14 +17,17 @@ const addStock = async (req, res, next) => {
         let imageUrl = null;
         if (req.file) {
             const img = await uploadImage(req.file.path);
-            imageUrl = img?.secure_url || null;
+            imageUrl = {
+                url: img.secure_url,
+                publicId: img.public_id
+            };
 
             if (fs.existsSync(req.file.path)) {
                 fs.unlinkSync(req.file.path);
             }
         }
 
-        let item = await Item.findOne({ name: name.trim().toLowerCase() });
+        const item = await Item.findOne({ name: name.trim().toLowerCase() });
 
         const batchData = {
             batchNo,
@@ -132,7 +136,7 @@ const removeStock = async (req, res, next) => {
             return res.status(200).json(
                 new ApiResponse(200, null, "Stock removed and item deleted as stock reached 0")
             );
-        }else {
+        } else {
             await item.save();
             return res.status(200).json(
                 new ApiResponse(200, item, "Stock removed successfully")

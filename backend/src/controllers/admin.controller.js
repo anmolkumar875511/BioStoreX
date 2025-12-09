@@ -5,9 +5,9 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const addStorekeeper = async (req, res, next) => {
     try {
-        const { username, fullName, email, password } = req.body;
+        const { userName, fullName, email, password } = req.body;
 
-        if (!username || !fullName || !email || !password) {
+        if (!userName || !fullName || !email || !password) {
             throw new ApiError(400, "All fields are required");
         }
 
@@ -17,7 +17,7 @@ const addStorekeeper = async (req, res, next) => {
         }
 
         const storekeeper = await User.create({
-            username,
+            userName,
             fullName,
             email,
             password,

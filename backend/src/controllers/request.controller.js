@@ -19,6 +19,11 @@ const requestItem = async (req, res, next) => {
             throw new ApiError(400, "Requested quantity exceeds available stock");
         }
 
+        const existing = await Request.findOne({ user: req.user._id, item: itemId, status: "PENDING" });
+        if (existing) {
+            throw new ApiError(400, "You already have a pending request for this item");
+        }
+
         const request = await Request.create({
             user: req.user._id,   // Student
             item: itemId,
@@ -36,7 +41,7 @@ const requestItem = async (req, res, next) => {
 
 const approveRequest = async (req, res, next) => {
     try {
-        const { requestId } = req.params;
+        const {id: requestId } = req.params;
 
         const request = await Request.findById(requestId).populate("item");
         if (!request) throw new ApiError(404, "Request not found");
@@ -66,7 +71,7 @@ const approveRequest = async (req, res, next) => {
 
 const declineRequest = async (req, res, next) => {
     try {
-        const { requestId } = req.params;
+        const { id: requestId } = req.params;
         const { reason } = req.body;
 
         const request = await Request.findById(requestId);
@@ -93,7 +98,7 @@ const declineRequest = async (req, res, next) => {
 
 const issueItem = async (req, res, next) => {
     try {
-        const { requestId } = req.params;
+        const {id: requestId } = req.params;
 
         const request = await Request.findById(requestId).populate("item user");
         if (!request) throw new ApiError(404, "Request not found");
@@ -150,7 +155,7 @@ const getAllRequests = async (req, res, next) => {
     try {
         const requests = await Request.find()
             .populate("user", "fullName username email role")
-            .populxate("item", "name category unitType totalQuantity")
+            .populate("item", "name category unitType totalQuantity")
             .sort({ createdAt: -1 });
 
         return res

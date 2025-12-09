@@ -9,7 +9,7 @@ const router = Router();
 router.post(
     "/add-stock",
     verifyJWT,
-    authorizeRoles("STOREKEEPER"),
+    authorizeRoles("Storekeeper"),
     upload.single("image"),
     addStock
 );
@@ -17,7 +17,7 @@ router.post(
 router.post(
     "/remove-stock",
     verifyJWT,
-    authorizeRoles("STOREKEEPER"),
+    authorizeRoles("Storekeeper"),
     removeStock
 );
 
