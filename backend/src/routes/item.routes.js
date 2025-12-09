@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { addStock, removeStock } from "../controllers/stock.controller.js";
+import { addStock, removeStock } from "../controllers/item.controller.js";
 import verifyJWT from "../middlewares/verifyJWT.js";
-import { authorizeRoles } from "../middlewares/authRoles.js";
+import { authorizeRoles } from "../middlewares/authRoles.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
 
 const router = Router();

@@ -9,7 +9,7 @@ import {
 } from "../controllers/request.controller.js";
 
 import verifyJWT from "../middlewares/verifyJWT.js";
-import { authorizeRoles } from "../middlewares/authRoles.js";
+import { authorizeRoles } from "../middlewares/authRoles.middleware.js";
 
 const router = Router();
 

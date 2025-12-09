@@ -19,16 +19,22 @@ app.use(
     })
 );
 
-// import routers
-import userRouter from "./routes/user.routes.js";
-// import itemRouter from "./routes/item.routes.js";
-// import stockLogRouter from "./routes/stock-log.routes.js";
-// import issueLogRouter from "./routes/issue-log.routes.js";
 
+import userRouter from "./routes/user.routes.js";
 app.use("/api/v1/user", userRouter);
-// app.use("/api/v1/item", itemRouter);
-// app.use("/api/v1/stock-log", stockLogRouter);
-// app.use("/api/v1/issue-log", issueLogRouter);
+
+
+import requestRouter from "./routes/request.route.js";
+app.use("/api/v1/request", requestRouter);
+
+
+import itemRouter from "./routes/item.routes.js";
+app.use("/api/v1/item", itemRouter);
+
+
+import adminRoutes from "./routes/admin.routes.js";
+app.use("/api/v1/admin", adminRoutes);
+
 
 
 export { app };
