@@ -1,5 +1,5 @@
 import { Item } from "../models/item.model.js";
-import { StockLog } from "../models/stockLog.model.js"; // Import StockLog
+import { StockLog } from "../models/stock-log.model.js"; 
 import { uploadImage } from "../utils/cloudinary.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";

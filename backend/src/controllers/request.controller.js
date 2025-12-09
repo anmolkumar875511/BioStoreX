@@ -1,4 +1,5 @@
 import { Request } from "../models/request.model.js";
+import { IssueLog } from "../models/issue-log.model.js";
 import { Item } from "../models/item.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";

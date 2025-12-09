@@ -3,12 +3,12 @@ import {
     requestItem, 
     approveRequest,
     declineRequest,
-    markAsIssued,
+    issueItem,
     getMyRequests,
     getAllRequests 
 } from "../controllers/request.controller.js";
 
-import verifyJWT from "../middlewares/verifyJWT.js";
+import verifyJWT from "../middlewares/auth.middleware.js";
 import { authorizeRoles } from "../middlewares/authRoles.middleware.js";
 
 const router = Router();
@@ -55,7 +55,7 @@ router.put(
     "/issue/:id",
     verifyJWT,
     authorizeRoles("STOREKEEPER"),
-    markAsIssued
+    issueItem
 );
 
 export default router;
