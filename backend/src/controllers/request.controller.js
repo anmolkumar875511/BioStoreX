@@ -25,7 +25,7 @@ const requestItem = async (req, res, next) => {
         }
 
         const request = await Request.create({
-            user: req.user._id,   // Student
+            user: req.user._id, 
             item: itemId,
             quantityRequested: quantity,
             status: "PENDING"
@@ -187,6 +187,66 @@ const getMyRequests = async (req, res, next) => {
 };
 
 
+const returnItem = async (req, res, next) => {
+    try {
+        const { id: requestId } = req.params;
+        const { quantity, note } = req.body;
+
+        if (!quantity) {
+            throw new ApiError(400, "Quantity is required");
+        }
+
+        const request = await Request.findById(requestId).populate("item user");
+        if (!request) throw new ApiError(404, "Request not found");
+
+        if (request.status !== "ISSUED") {
+            throw new ApiError(400, "Item must be issued before it can be returned");
+        }
+
+        if (quantity > request.quantityApproved) {
+            throw new ApiError(400, "Return quantity exceeds issued quantity");
+        }
+
+        const item = await Item.findById(request.item._id);
+        if (!item) {
+            throw new ApiError(404, "Item not found");
+        }
+
+        let qtyToRestore = Number(quantity);
+        for (const batch of item.batches) {
+            if (qtyToRestore <= 0) break;
+
+            batch.quantity += qtyToRestore;
+            qtyToRestore = 0;
+        }
+
+        item.totalQuantity += Number(quantity);
+        await item.save();
+
+        request.status = "RETURNED";
+        request.returnedAt = new Date();
+        request.quantityReturned = Number(quantity);
+        request.returnProcessedBy = req.user._id;
+        await request.save();
+
+        await IssueLog.create({
+            item: item._id,
+            issuedTo: request.user._id,
+            quantity: -Math.abs(quantity), 
+            issuedBy: req.user._id,
+            note: note || "Item returned"
+        });
+
+        return res.status(200).json(
+            new ApiResponse(200, request, "Item returned successfully")
+        );
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
 
 export {
     requestItem,
@@ -194,5 +254,6 @@ export {
     declineRequest,
     issueItem,
     getAllRequests,
-    getMyRequests
+    getMyRequests,
+    returnItem
 };

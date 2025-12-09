@@ -7,12 +7,15 @@ const requestSchema = new mongoose.Schema({
     quantityApproved: { type: Number, min: 0 }, 
     status: { 
         type: String,
-        enum: ["PENDING", "APPROVED", "DECLINED", "ISSUED"],
+        enum: ["PENDING", "APPROVED", "DECLINED", "ISSUED", "RETURNED"],
         default: "PENDING"
     },
     approvedBy: { type: mongoose.Types.ObjectId, ref: "User" },
     issuedAt: { type: Date },
-    declineReason: { type: String }
+    declineReason: { type: String },
+    quantityReturned: { type: Number, min: 0 },
+    returnedAt: { type: Date },
+    returnProcessedBy: { type: mongoose.Types.ObjectId, ref: "User" }
 }, { timestamps: true });
 
 

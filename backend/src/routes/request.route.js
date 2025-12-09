@@ -5,7 +5,8 @@ import {
     declineRequest,
     issueItem,
     getMyRequests,
-    getAllRequests 
+    getAllRequests,
+    returnItem 
 } from "../controllers/request.controller.js";
 
 import verifyJWT from "../middlewares/auth.middleware.js";
@@ -14,7 +15,7 @@ import { authorizeRoles } from "../middlewares/authRoles.middleware.js";
 const router = Router();
 
 router.post(
-    "/request",
+    "/request-item",
     verifyJWT,
     authorizeRoles("Student"),
     requestItem
@@ -31,7 +32,7 @@ router.get(
 
 
 router.get(
-    "/",
+    "/all-requests",
     verifyJWT,
     authorizeRoles("Storekeeper"),
     getAllRequests
@@ -57,5 +58,13 @@ router.put(
     authorizeRoles("Storekeeper"),
     issueItem
 );
+
+router.put(
+    "/return/:id",
+    verifyJWT,
+    authorizeRoles("Storekeeper"),
+    returnItem
+);
+
 
 export default router;

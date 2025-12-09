@@ -27,7 +27,7 @@ const addStock = async (req, res, next) => {
             }
         }
 
-        const item = await Item.findOne({ name: name.trim().toLowerCase() });
+        let item = await Item.findOne({ name: name.trim().toLowerCase() });
 
         const batchData = {
             batchNo,

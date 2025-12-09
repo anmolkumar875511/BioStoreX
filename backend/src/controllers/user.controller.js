@@ -84,9 +84,13 @@ const loginUser = asyncHandler(async (req, res) => {
         throw new ApiError(401, "Invalid password");
     }
 
-    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id); // FIXED
+    if (!user.isActive) {
+        throw new ApiError(403, "User account is deactivated");
+    }
 
-    const loggedInUser = await User.findById(user._id).select("-password -refreshToken"); // FIXED
+    const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
+
+    const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
     const options = {
         httpOnly: true,
