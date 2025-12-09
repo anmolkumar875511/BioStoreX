@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Biotech Store Management</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Source+Sans+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/responsive.css">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <i class="fas fa-flask"></i>
+                <h1>Biotech <span>Store</span> Management</h1>
+            </div>
+            <div class="user-info">
+                <div class="user-role" id="userRole">Storekeeper</div>
+                <div class="user-name" id="userName">Dr. Sarah Johnson</div>
+                <i class="fas fa-user-circle user-avatar"></i>
+                <button class="btn btn-logout" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <ul class="nav-tabs">
+                <li class="active" data-tab="dashboard">
+                    <i class="fas fa-tachometer-alt"></i> Dashboard
+                </li>
+                <li data-tab="inventory">
+                    <i class="fas fa-boxes"></i> Inventory
+                </li>
+                <li data-tab="requests">
+                    <i class="fas fa-hand-paper"></i> Requests
+                </li>
+                <li data-tab="issue-log">
+                    <i class="fas fa-clipboard-list"></i> Issue Log
+                </li>
+                <li data-tab="reports">
+                    <i class="fas fa-chart-bar"></i> Reports
+                </li>
+                <li data-tab="settings">
+                    <i class="fas fa-cog"></i> Settings
+                </li>
+            </ul>
+            <div class="nav-actions">
+                <button class="btn btn-primary" id="newRequestBtn">
+                    <i class="fas fa-plus"></i> New Request
+                </button>
+                <button class="btn btn-success" id="restockBtn">
+                    <i class="fas fa-boxes"></i> Restock
+                </button>
+                <button class="btn btn-warning" id="notificationsBtn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge" id="notificationCount">3</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="container" id="mainContent">
+        <!-- Content will be loaded dynamically by JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Biotech Store Management</h3>
+                    <p>Department of Biotechnology</p>
+                    <p>Efficient lab material tracking system</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p><i class="fas fa-envelope"></i> store@biotech.edu</p>
+                    <p><i class="fas fa-phone"></i> +1 (555) 123-4567</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Building 12, Room 304</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#" class="footer-link">Inventory Guidelines</a>
+                    <a href="#" class="footer-link">Request Policies</a>
+                    <a href="#" class="footer-link">User Manual</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Biotech Department Store Management System. All rights reserved.</p>
+                <p>No more prehistoric store management!</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Files -->
+    <script src="scripts/utils.js"></script>
+    <script src="scripts/inventory.js"></script>
+    <script src="scripts/requests.js"></script>
+    <script src="scripts/modals.js"></script>
+    <script src="scripts/main.js"></script>
+</body>
+</html>
