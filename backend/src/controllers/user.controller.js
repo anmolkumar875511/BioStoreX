@@ -204,4 +204,45 @@ const changePassword = asyncHandler(async (req, res) => {
     );
 });
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken, changePassword };
+const updateUserProfile = asyncHandler(async (req, res) => {
+    const { userName, fullName } = req.body;
+
+    if (!userName && !fullName) {
+        throw new ApiError(400, "At least one field is required");
+    }
+
+    const alreadyExists = await User.findOne({
+        userName: userName?.toLowerCase(),
+        _id: { $ne: req.user._id }
+    });
+
+    if (alreadyExists) {
+        throw new ApiError(409, "Username is already taken");
+    }
+
+    const user = await User.findById(req.user._id);
+
+    if (userName) user.userName = userName.toLowerCase();
+    if (fullName) user.fullName = fullName;
+
+    await user.save();
+
+    const updatedUser = await User.findById(req.user._id).select("-password -refreshToken");
+
+    return res.status(200)
+    .json(
+        new ApiResponse(
+            200,
+            updatedUser,
+            "User profile updated successfully"
+        )
+    );
+});
+
+export { registerUser,
+    loginUser,
+    logoutUser,
+    refreshAccessToken,
+    changePassword,
+    updateUserProfile
+};
