@@ -5,10 +5,10 @@
   "license": "ISC",
   "author": "defalted_losers",
   "type": "module",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
     "dev": "nodemon -r dotenv/config --experimental-json-modules src/server.js",
-    "start": "node server.js"
+    "start": "node src/server.js"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",

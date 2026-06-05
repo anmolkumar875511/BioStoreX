@@ -6,6 +6,34 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import cloudinary from "cloudinary";
 import fs from "fs";
 
+const getAllItems = async (req, res, next) => {
+    try {
+        const items = await Item.find().sort({ name: 1 });
+
+        return res.status(200).json(
+            new ApiResponse(200, items, "Items fetched successfully")
+        );
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getItemById = async (req, res, next) => {
+    try {
+        const item = await Item.findById(req.params.id);
+
+        if (!item) {
+            throw new ApiError(404, "Item not found");
+        }
+
+        return res.status(200).json(
+            new ApiResponse(200, item, "Item fetched successfully")
+        );
+    } catch (error) {
+        next(error);
+    }
+};
+
 const addStock = async (req, res, next) => {
     try {
         const { name, category, unitType, quantity, batchNo, expiryDate } = req.body;
@@ -150,4 +178,4 @@ const removeStock = async (req, res, next) => {
 
 
 
-export { addStock, removeStock };
+export { getAllItems, getItemById, addStock, removeStock };
