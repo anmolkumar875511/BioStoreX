@@ -18,6 +18,12 @@ const generateAccessAndRefreshToken = async (userId) => {
     }
 };
 
+const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+};
+
 
 
 const registerUser = asyncHandler(async (req, res) => {
@@ -92,15 +98,10 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken");
 
-    const options = {
-        httpOnly: true,
-        secure: true
-    };
-
     return res
         .status(200)
-        .cookie("refreshToken", refreshToken, options)
-        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, cookieOptions)
+        .cookie("accessToken", accessToken, cookieOptions)
         .json(
             new ApiResponse(
                 200,
@@ -121,15 +122,10 @@ const logoutUser = asyncHandler(async (req, res) => {
         { new: true }
     );
 
-    const options = {
-        httpOnly: true,
-        secure: true
-    };
-
     return res
         .status(200)
-        .clearCookie("refreshToken", options)
-        .clearCookie("accessToken", options)
+        .clearCookie("refreshToken", cookieOptions)
+        .clearCookie("accessToken", cookieOptions)
         .json(
             new ApiResponse(
                 200,
@@ -161,14 +157,9 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
-    const options = {
-        httpOnly: true,
-        secure: true
-    };
-
     return res.status(200)
-    .cookie("refreshToken", refreshToken, options)
-    .cookie("accessToken", accessToken, options)
+    .cookie("refreshToken", refreshToken, cookieOptions)
+    .cookie("accessToken", accessToken, cookieOptions)
     .json(
         new ApiResponse(
             200,
