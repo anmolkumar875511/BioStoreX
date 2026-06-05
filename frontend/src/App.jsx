@@ -399,7 +399,21 @@ function App() {
 
             {authMode !== "forgot" ? (
               <>
-                <Field name="email" label="Email" type="email" required={authMode === "register"} />
+                {authMode === "register" && (
+                  <>
+                    <Field name="fullName" label="Full name" required />
+                    <Field name="userName" label="Username" required />
+                    <Field name="registrationNo" label="Registration number" required />
+                    <Select name="year" label="Year" required>
+                      <option value="">Select year</option>
+                      <option value="1">Year 1</option>
+                      <option value="2">Year 2</option>
+                      <option value="3">Year 3</option>
+                      <option value="4">Year 4</option>
+                    </Select>
+                  </>
+                )}
+                <Field name="email" label="Email" type="email" required />
                 <Field name="password" label="Password" type="password" required />
               </>
             ) : (
