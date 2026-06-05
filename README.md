@@ -9,8 +9,7 @@ It improves transparency, prevents stock mismanagement, and simplifies the proce
 
 | Name              | Registration Number |
 |-------------------|---------------------|
-| **Anmol Kumar**   | 20240007            |
-| **Ashwini Kumar** | 20240014            |
+| **Anmol Kumar**   | 20240007            | 
 | **Honey Tiwari**  | 20240029            |
 
 ---
