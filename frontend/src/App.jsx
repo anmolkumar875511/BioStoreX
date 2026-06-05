@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "/api/v1";
 
 const categories = ["CHEMICAL", "GLASSWARE", "CONSUMABLE", "BIO_MATERIAL", "EQUIPMENT"];
 const units = ["g", "mg", "kg", "mL", "L", "pieces", "box", "pack"];
@@ -35,11 +35,17 @@ function App() {
         headers.Authorization = `Bearer ${auth.accessToken}`;
       }
 
-      const response = await fetch(`${API_BASE_URL}${path}`, {
-        ...options,
-        headers,
-        credentials: "include",
-      });
+      let response;
+
+      try {
+        response = await fetch(`${API_BASE_URL}${path}`, {
+          ...options,
+          headers,
+          credentials: "include",
+        });
+      } catch {
+        throw new Error("Backend is not reachable. Please start the backend server.");
+      }
 
       const payload = await response.json().catch(() => ({}));
 
@@ -289,8 +295,8 @@ function App() {
               </>
             )}
 
-            <Field name="userName" label="Username" />
-            <Field name="email" label="Email" type="email" />
+            <Field name="userName" label="Username" required={authMode === "register"} />
+            <Field name="email" label="Email" type="email" required={authMode === "register"} />
             <Field name="password" label="Password" type="password" required />
 
             <button className="primary" disabled={loading}>
